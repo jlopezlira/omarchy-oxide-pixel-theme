@@ -1,0 +1,44 @@
+[bar]
+background = "#101113"
+text = "#D9DBDD"
+active = "#F77B38"
+
+[controls]
+normal-border = "#909498"
+focus-border = "#F77B38"
+focus-border-alpha = 1.0
+selected-color = "#F77B38"
+selected-fill-alpha = 0.14
+selected-border = "#F77B38"
+selected-border-width = 1
+
+[menu]
+background = "#17191B"
+border = "#555A60"
+selected-background = "#36393D"
+selected-background-alpha = 1.0
+selected-text = "#F3F4F5"
+selected-border = "#F77B38"
+selected-border-alpha = 1.0
+
+[launcher]
+background = "#17191B"
+border = "#555A60"
+selected-background = "#36393D"
+selected-background-alpha = 1.0
+selected-text = "#F3F4F5"
+selected-border = "#F77B38"
+selected-border-alpha = 1.0
+
+[notifications]
+grouping = "stack"
+background = "#17191B"
+text = "#D9DBDD"
+border = "#555A60"
+countdown = "#F77B38"
+
+[lock]
+background = "#101113"
+text = "#F3F4F5"
+border = "#555A60"
+border-active = "#F77B38"

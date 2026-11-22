@@ -1,0 +1,68 @@
+--- a/Layout.js
++++ b/Layout.js
+@@ -23,7 +23,7 @@
+   var heightOf = opts.heightOf || function() { return 76 }
+   var order = [], byKey = {}
+   for (var i = 0; i < rows.length; i++) {
+-    var key = groupKeyFor(rows[i])
++    var key = opts.groupKeyFor(rows[i])
+     if (!byKey[key]) { byKey[key] = { key: key, rows: [] }; order.push(key) }
+     byKey[key].rows.push(rows[i])
+   }
+--- a/Service.qml
++++ b/Service.qml
+@@ -296,7 +296,7 @@
+     if (at < 0) return false
+     keyboardKey = key
+     hoverKey = key
+-    pointerEntered(Layout.groupKeyFor(toasts.get(at)))
++    pointerEntered(service.deckKeyFor(toasts.get(at)))
+     return true
+   }
+ 
+@@ -338,7 +338,7 @@
+   function reachable(key) {
+     var at = rowIndexFor(key)
+     if (at < 0) return false
+-    var place = layoutWith(true, Layout.groupKeyFor(toasts.get(at))).placements[key]
++    var place = layoutWith(true, service.deckKeyFor(toasts.get(at))).placements[key]
+     if (!place || place.hidden) return false
+     var screen = null
+     for (var s = 0; s < Quickshell.screens.length; s++)
+@@ -522,6 +522,10 @@
+ 
+   // The deck as it would stand with this deck open; the keyboard asks before
+   // it moves.
++  function deckKeyFor(row) {
++    return Commons.Color.shellValues["notifications.grouping"] === "stack" ? "desktop" : Layout.groupKeyFor(row)
++  }
++
+   function layoutWith(isExpanded, deckKey) {
+     var rows = []
+     for (var i = 0; i < toasts.count; i++) {
+@@ -529,6 +533,7 @@
+       if (!leaving[row.key]) rows.push(row)   // a card on its way out takes no space
+     }
+     return Layout.compute(rows, {
++      groupKeyFor: service.deckKeyFor,
+       expanded: isExpanded,
+       openDeck: deckKey,
+       gap: gap,
+@@ -1470,7 +1475,7 @@
+         })
+       } else if (toasts.count > 0) {
+         var front = toasts.get(0)
+-        service.pointerEntered(Layout.groupKeyFor(front))
++        service.pointerEntered(service.deckKeyFor(front))
+         service.hoverKey = String(front.key)
+       } else {
+         service.pointerEntered(undefined)
+@@ -1641,7 +1646,7 @@
+               onLinkOpened: service.stopKeyboard()
+               now: service.nowTick
+               expanded: service.expanded
+-                        && service.openDeck === Layout.groupKeyFor(model)
++                        && service.openDeck === service.deckKeyFor(model)
+               // Hover opens the body only when there is nothing else to open.
+               sole: toasts.count === 1
+               paused: service.expanded
